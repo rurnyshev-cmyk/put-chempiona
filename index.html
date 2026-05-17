@@ -1,5 +1,4 @@
 <!DOCTYPE html>
-
 <html lang="ru">
 <head>
 <meta charset="UTF-8">
@@ -8,862 +7,139 @@
 <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Montserrat:wght@400;500;600;700;900&display=swap" rel="stylesheet">
 <style>
 * { margin: 0; padding: 0; box-sizing: border-box; }
-
 :root {
-–bg: #0a0a0f;
-–s1: #111118;
-–s2: #1a1a26;
-–border: #2a2a3a;
-–gold: #f5c842;
-–gold2: #e8a820;
-–red: #e84040;
-–blue: #3a8ff5;
-–green: #2ecc71;
-–text: #f0f0f8;
-–muted: #6a6a88;
-–ff: ‘Bebas Neue’, cursive;
-–fb: ‘Montserrat’, sans-serif;
+  --bg:#0a0a0f;--s1:#111118;--s2:#1a1a26;--border:#2a2a3a;
+  --gold:#f5c842;--gold2:#e8a820;--red:#e84040;--blue:#3a8ff5;--green:#2ecc71;
+  --text:#f0f0f8;--muted:#6a6a88;
+  --ff:'Bebas Neue',cursive;--fb:'Montserrat',sans-serif;
 }
-
-body {
-background: var(–bg);
-color: var(–text);
-font-family: var(–fb);
-min-height: 100vh;
-overflow-x: hidden;
-}
-
-/* ── NOISE TEXTURE ── */
-body::before {
-content: ‘’;
-position: fixed;
-inset: 0;
-background-image: url(“data:image/svg+xml,%3Csvg viewBox=‘0 0 256 256’ xmlns=‘http://www.w3.org/2000/svg’%3E%3Cfilter id=‘n’%3E%3CfeTurbulence type=‘fractalNoise’ baseFrequency=‘0.9’ numOctaves=‘4’ stitchTiles=‘stitch’/%3E%3C/filter%3E%3Crect width=‘100%25’ height=‘100%25’ filter=‘url(%23n)’ opacity=‘0.03’/%3E%3C/svg%3E”);
-pointer-events: none;
-z-index: 0;
-opacity: 0.4;
-}
-
-/* ── SCREENS ── */
-.screen { display: none; min-height: 100vh; position: relative; z-index: 1; }
-.screen.active { display: flex; flex-direction: column; }
-
-/* ── INTRO SCREEN ── */
-#intro {
-align-items: center;
-justify-content: center;
-text-align: center;
-padding: 40px 20px;
-background: radial-gradient(ellipse at 50% 0%, rgba(245,200,66,0.12) 0%, transparent 60%);
-}
-
-.intro-badge {
-display: inline-block;
-border: 1px solid var(–gold);
-color: var(–gold);
-font-family: var(–fb);
-font-size: 10px;
-font-weight: 700;
-letter-spacing: 0.3em;
-text-transform: uppercase;
-padding: 6px 16px;
-border-radius: 20px;
-margin-bottom: 28px;
-animation: fadeUp 0.6s ease both;
-}
-
-.intro-title {
-font-family: var(–ff);
-font-size: clamp(52px, 10vw, 100px);
-line-height: 0.92;
-letter-spacing: 0.02em;
-margin-bottom: 8px;
-animation: fadeUp 0.6s 0.1s ease both;
-}
-
-.intro-title .highlight {
-display: block;
--webkit-text-stroke: 2px var(–gold);
-color: transparent;
-}
-
-.intro-sub {
-font-size: 14px;
-color: var(–muted);
-line-height: 1.7;
-max-width: 420px;
-margin: 20px auto 40px;
-animation: fadeUp 0.6s 0.2s ease both;
-}
-
-.intro-stats {
-display: flex;
-gap: 32px;
-justify-content: center;
-margin-bottom: 48px;
-animation: fadeUp 0.6s 0.3s ease both;
-}
-
-.istat { text-align: center; }
-.istat-n {
-font-family: var(–ff);
-font-size: 36px;
-color: var(–gold);
-line-height: 1;
-}
-.istat-l {
-font-size: 10px;
-color: var(–muted);
-letter-spacing: 0.15em;
-text-transform: uppercase;
-margin-top: 2px;
-}
-
-.btn-start {
-background: var(–gold);
-color: #0a0a0f;
-font-family: var(–fb);
-font-size: 17px;
-font-weight: 800;
-letter-spacing: 0.05em;
-border: none;
-padding: 16px 52px;
-cursor: pointer;
-clip-path: polygon(12px 0%, 100% 0%, calc(100% - 12px) 100%, 0% 100%);
-transition: all 0.2s;
-animation: fadeUp 0.6s 0.4s ease both;
-}
-.btn-start:hover {
-background: #fff;
-transform: scale(1.04);
-}
-
-.intro-deco {
-position: absolute;
-font-size: 180px;
-opacity: 0.03;
-pointer-events: none;
-}
-.deco-tl { top: -20px; left: -20px; }
-.deco-br { bottom: -20px; right: -20px; }
-
-/* ── QUIZ SCREEN ── */
-#quiz {
-padding: 0;
-background: #0f0f18;
-}
-
-.quiz-header {
-background: var(–s1);
-border-bottom: 1px solid var(–border);
-padding: 16px 24px;
-display: flex;
-align-items: center;
-justify-content: space-between;
-flex-shrink: 0;
-}
-
-.quiz-logo {
-font-family: var(–fb);
-font-size: 16px;
-font-weight: 800;
-color: var(–gold);
-letter-spacing: 0.04em;
-}
-
-.progress-wrap {
-flex: 1;
-max-width: 300px;
-margin: 0 24px;
-}
-.progress-label {
-display: flex;
-justify-content: space-between;
-font-size: 10px;
-color: var(–muted);
-letter-spacing: 0.1em;
-text-transform: uppercase;
-margin-bottom: 6px;
-}
-.progress-bar {
-height: 3px;
-background: var(–s2);
-border-radius: 2px;
-overflow: hidden;
-}
-.progress-fill {
-height: 100%;
-background: linear-gradient(90deg, var(–gold2), var(–gold));
-border-radius: 2px;
-transition: width 0.4s ease;
-}
-
-.q-counter {
-font-family: var(–fb);
-font-size: 18px;
-font-weight: 700;
-color: var(–muted);
-}
-.q-counter span { color: var(–gold); }
-
-.quiz-body {
-flex: 1;
-display: flex;
-flex-direction: column;
-align-items: center;
-justify-content: center;
-padding: 40px 20px;
-max-width: 680px;
-margin: 0 auto;
-width: 100%;
-}
-
-.q-category {
-font-size: 11px;
-font-weight: 700;
-letter-spacing: 0.3em;
-text-transform: uppercase;
-color: var(–gold);
-margin-bottom: 16px;
-opacity: 0;
-animation: fadeUp 0.4s ease forwards;
-}
-
-.q-text {
-font-family: var(–fb);
-font-size: clamp(22px, 4vw, 34px);
-font-weight: 700;
-line-height: 1.3;
-text-align: center;
-margin-bottom: 44px;
-color: #ffffff;
-opacity: 0;
-animation: fadeUp 0.4s 0.1s ease forwards;
-}
-
-.answers {
-display: grid;
-grid-template-columns: 1fr 1fr;
-gap: 12px;
-width: 100%;
-opacity: 0;
-animation: fadeUp 0.4s 0.2s ease forwards;
-}
-
-.ans-btn {
-background: #1e1e2e;
-border: 1px solid #3a3a55;
-color: #e8e8f8;
-font-family: var(–fb);
-font-size: 14px;
-font-weight: 600;
-line-height: 1.5;
-padding: 18px 20px;
-cursor: pointer;
-text-align: left;
-transition: all 0.18s;
-position: relative;
-overflow: hidden;
-border-radius: 2px;
-}
-
-.ans-btn::before {
-content: ‘’;
-position: absolute;
-left: 0; top: 0; bottom: 0;
-width: 0;
-background: var(–gold);
-transition: width 0.18s;
-}
-
-.ans-btn:hover {
-border-color: var(–gold);
-color: var(–gold);
-transform: translateY(-2px);
-}
-
-.ans-btn:hover::before { width: 3px; }
-
-.ans-btn.selected {
-border-color: var(–gold);
-background: rgba(245,200,66,0.08);
-color: var(–gold);
-}
-.ans-btn.selected::before { width: 3px; }
-
-.ans-btn.wrong {
-border-color: var(–red);
-background: rgba(232,64,64,0.08);
-color: var(–red);
-}
-
-.ans-letter {
-font-family: var(–fb);
-font-size: 13px;
-font-weight: 800;
-color: var(–muted);
-margin-bottom: 6px;
-display: block;
-transition: color 0.18s;
-}
-.ans-btn:hover .ans-letter,
-.ans-btn.selected .ans-letter { color: var(–gold); }
-.ans-btn.wrong .ans-letter { color: var(–red); }
-
-/* ── RESULT SCREEN ── */
-#result {
-align-items: center;
-justify-content: flex-start;
-padding: 0;
-background: var(–bg);
-}
-
-.result-hero {
-width: 100%;
-padding: 60px 24px 40px;
-text-align: center;
-position: relative;
-overflow: hidden;
-}
-
-.result-hero::before {
-content: ‘’;
-position: absolute;
-inset: 0;
-background: radial-gradient(ellipse at 50% 0%, rgba(245,200,66,0.15) 0%, transparent 60%);
-}
-
-.result-trophy {
-font-size: 72px;
-display: block;
-margin-bottom: 12px;
-animation: bounce 0.6s ease;
-}
-
-.result-label {
-font-size: 10px;
-font-weight: 700;
-letter-spacing: 0.3em;
-text-transform: uppercase;
-color: var(–muted);
-margin-bottom: 8px;
-}
-
-.result-sport {
-font-family: var(–fb);
-font-size: clamp(28px, 6vw, 52px);
-font-weight: 900;
-line-height: 1;
-color: var(–gold);
-margin-bottom: 16px;
-}
-
-.result-desc {
-font-size: 14px;
-color: var(–muted);
-line-height: 1.7;
-max-width: 480px;
-margin: 0 auto 32px;
-}
-
-.result-cards {
-display: grid;
-grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-gap: 12px;
-padding: 0 24px 24px;
-max-width: 800px;
-margin: 0 auto;
-width: 100%;
-}
-
-.rc {
-background: var(–s1);
-border: 1px solid var(–border);
-border-radius: 2px;
-padding: 20px;
-position: relative;
-overflow: hidden;
-}
-
-.rc::before {
-content: ‘’;
-position: absolute;
-top: 0; left: 0; right: 0;
-height: 2px;
-}
-
-.rc.gold::before { background: var(–gold); }
-.rc.blue::before { background: var(–blue); }
-.rc.green::before { background: var(–green); }
-.rc.red::before { background: var(–red); }
-
-.rc-icon { font-size: 28px; margin-bottom: 10px; display: block; }
-.rc-title {
-font-family: var(–fb);
-font-size: 10px;
-font-weight: 700;
-letter-spacing: 0.12em;
-color: var(–muted);
-text-transform: uppercase;
-margin-bottom: 6px;
-}
-.rc-value {
-font-family: var(–fb);
-font-size: 13px;
-font-weight: 600;
-line-height: 1.5;
-color: var(–text);
-}
-
-.result-actions {
-display: flex;
-gap: 12px;
-justify-content: center;
-padding: 0 24px 40px;
-flex-wrap: wrap;
-}
-
-.btn-retry {
-background: transparent;
-border: 1px solid var(–border);
-color: var(–muted);
-font-family: var(–fb);
-font-size: 13px;
-font-weight: 700;
-letter-spacing: 0.1em;
-padding: 12px 32px;
-cursor: pointer;
-transition: all 0.2s;
-clip-path: polygon(8px 0%, 100% 0%, calc(100% - 8px) 100%, 0% 100%);
-}
-.btn-retry:hover { border-color: var(–gold); color: var(–gold); }
-
-.btn-share {
-background: var(–gold);
-color: #0a0a0f;
-font-family: var(–fb);
-font-size: 13px;
-font-weight: 800;
-letter-spacing: 0.1em;
-padding: 12px 32px;
-border: none;
-cursor: pointer;
-transition: all 0.2s;
-clip-path: polygon(8px 0%, 100% 0%, calc(100% - 8px) 100%, 0% 100%);
-}
-.btn-share:hover { background: #fff; }
-
-/* Scores bar */
-.scores-section {
-padding: 0 24px 32px;
-max-width: 800px;
-margin: 0 auto;
-width: 100%;
-}
-.scores-title {
-font-family: var(–fb);
-font-size: 14px;
-font-weight: 800;
-letter-spacing: 0.12em;
-letter-spacing: 0.1em;
-color: var(–muted);
-margin-bottom: 16px;
-text-align: center;
-}
-.score-bar-wrap { margin-bottom: 10px; }
-.score-bar-label {
-display: flex;
-justify-content: space-between;
-font-size: 11px;
-color: var(–muted);
-margin-bottom: 4px;
-}
-.score-bar-track {
-height: 6px;
-background: var(–s2);
-border-radius: 3px;
-overflow: hidden;
-}
-.score-bar-fill {
-height: 100%;
-border-radius: 3px;
-transition: width 1s ease;
-}
-
-/* Footer credit */
-.credit {
-text-align: center;
-padding: 20px;
-font-size: 10px;
-color: var(–border);
-letter-spacing: 0.15em;
-text-transform: uppercase;
-}
-
-/* Animations */
-@keyframes fadeUp {
-from { opacity: 0; transform: translateY(20px); }
-to   { opacity: 1; transform: translateY(0); }
-}
-@keyframes bounce {
-0%,100% { transform: scale(1); }
-40%     { transform: scale(1.2); }
-70%     { transform: scale(0.95); }
-}
-
-/* Mobile */
-@media (max-width: 500px) {
-.answers { grid-template-columns: 1fr; }
-.intro-stats { gap: 20px; }
-.result-cards { grid-template-columns: 1fr 1fr; }
-}
-</style>
-
-</head>
-<body>
-
-<!-- ── INTRO ──────────────────────────────────────────────────────── -->
-
+body{background:var(--bg);color:var(--text);font-family:var(--fb);min-height:100vh;overflow-x:hidden}
+body::before{content:'';position:fixed;inset:0;background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.03'/%3E%3C/svg%3E");pointer-events:none;z-index:0;opacity:0.4}
+.screen{display:none;min-height:100vh;position:relative;z-index:1}
+.screen.active{display:flex;flex-direction:column}
+#intro{align-items:center;justify-content:center;text-align:center;padding:40px 20px;background:radial-gradient(ellipse at 50% 0%,rgba(245,200,66,0.12) 0%,transparent 60%)}
+.intro-badge{display:inline-block;border:1px solid var(--gold);color:var(--gold);font-family:var(--fb);font-size:10px;font-weight:700;letter-spacing:0.3em;text-transform:uppercase;padding:6px 16px;border-radius:20px;margin-bottom:28px;animation:fadeUp 0.6s ease both}
+.intro-title{font-family:var(--ff);font-size:clamp(52px,10vw,100px);line-height:0.92;letter-spacing:0.02em;margin-bottom:8px;animation:fadeUp 0.6s 0.1s ease both}
+.intro-title .highlight{display:block;-webkit-text-stroke:2px var(--gold);color:transparent}
+.intro-sub{font-size:14px;color:var(--muted);line-height:1.7;max-width:420px;margin:20px auto 40px;animation:fadeUp 0.6s 0.2s ease both}
+.intro-stats{display:flex;gap:32px;justify-content:center;margin-bottom:48px;animation:fadeUp 0.6s 0.3s ease both}
+.istat{text-align:center}
+.istat-n{font-family:var(--ff);font-size:36px;color:var(--gold);line-height:1}
+.istat-l{font-size:10px;color:var(--muted);letter-spacing:0.15em;text-transform:uppercase;margin-top:2px}
+.btn-start{background:var(--gold);color:#0a0a0f;font-family:var(--fb);font-size:17px;font-weight:800;letter-spacing:0.05em;border:none;padding:16px 52px;cursor:pointer;clip-path:polygon(12px 0%,100% 0%,calc(100% - 12px) 100%,0% 100%);transition:all 0.2s;animation:fadeUp 0.6s 0.4s ease both}
+.btn-start:hover{background:#fff;transform:scale(1.04)}
+.intro-deco{position:absolute;font-size:180px;opacity:0.03;pointer-events:none}
+.deco-tl{top:-20px;left:-20px}
+.deco-br{bottom:-20px;right:-20px}
+#quiz{padding:0;background:#0f0f18}
+.quiz-header{background:var(--s1);border-bottom:1px solid var(--border);padding:16px 24px;display:flex;align-items:center;justify-content:space-between;flex-shrink:0}
+.quiz-logo{font-family:var(--fb);font-size:16px;font-weight:800;color:var(--gold);letter-spacing:0.04em}
+.progress-wrap{flex:1;max-width:300px;margin:0 24px}
+.progress-label{display:flex;justify-content:space-between;font-size:10px;color:var(--muted);letter-spacing:0.1em;text-transform:uppercase;margin-bottom:6px}
+.progress-bar{height:3px;background:var(--s2);border-radius:2px;overflow:hidden}
+.progress-fill{height:100%;background:linear-gradient(90deg,var(--gold2),var(--gold));border-radius:2px;transition:width 0.4s ease}
+.q-counter{font-family:var(--fb);font-size:18px;font-weight:700;color:var(--muted)}
+.q-counter span{color:var(--gold)}
+.quiz-body{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:40px 20px;max-width:680px;margin:0 auto;width:100%}
+.q-category{font-size:11px;font-weight:700;letter-spacing:0.3em;text-transform:uppercase;color:var(--gold);margin-bottom:16px;opacity:0;animation:fadeUp 0.4s ease forwards}
+.q-text{font-family:var(--fb);font-size:clamp(22px,4vw,34px);font-weight:700;line-height:1.3;text-align:center;margin-bottom:44px;color:#ffffff;opacity:0;animation:fadeUp 0.4s 0.1s ease forwards}
+.answers{display:grid;grid-template-columns:1fr 1fr;gap:12px;width:100%;opacity:0;animation:fadeUp 0.4s 0.2s ease forwards}
+.ans-btn{background:#1e1e2e;border:1px solid #3a3a55;color:#e8e8f8;font-family:var(--fb);font-size:14px;font-weight:600;line-height:1.5;padding:18px 20px;cursor:pointer;text-align:left;transition:all 0.18s;position:relative;overflow:hidden;border-radius:2px}
+.ans-btn::before{content:'';position:absolute;left:0;top:0;bottom:0;width:0;background:var(--gold);transition:width 0.18s}
+.ans-btn:hover{border-color:var(--gold);color:var(--gold);transform:translateY(-2px)}
+.ans-btn:hover::before{width:3px}
+.ans-btn.selected{border-color:var(--gold);background:rgba(245,200,66,0.08);color:var(--gold)}
+.ans-btn.selected::before{width:3px}
+.ans-letter{font-family:var(--fb);font-size:13px;font-weight:800;color:var(--muted);margin-bottom:6px;display:block;transition:color 0.18s}
+.ans-btn:hover .ans-letter,.ans-btn.selected .ans-letter{color:var(--gold)}
+#result{align-items:center;justify-content:flex-start;padding:0;background:var(--bg)}
+.result-hero{width:100%;padding:60px 24px 40px;text-align:center;position:relative;overflow:hidden}
+.result-hero::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse at 50% 0%,rgba(245,200,66,0.15) 0%,transparent 60%)}
+.result-trophy{font-size:72px;display:block;margin-bottom:12px;animation:bounce 0.6s ease}
+.result-label{font-size:10px;font-weight:700;letter-spacing:0.3em;text-transform:uppercase;color:var(--muted);margin-bottom:8px}
+.result-sport{font-family:var(--fb);font-size:clamp(28px,6vw,52px);font-weight:900;line-height:1;color:var(--gold);margin-bottom:16px}
+.result-desc{font-size:14px;color:var(--muted);line-height:1.7;max-width:480px;margin:0 auto 32px}
+.result-cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:12px;padding:0 24px 24px;max-width:800px;margin:0 auto;width:100%}
+.rc{background:var(--s1);border:1px solid var(--border);border-radius:2px;padding:20px;position:relative;overflow:hidden}
+.rc::before{content:'';position:absolute;top:0;left:0;right:0;height:2px}
+.rc.gold::before{background:var(--gold)}
+.rc.blue::before{background:var(--blue)}
+.rc.green::before{background:var(--green)}
+.rc.red::before{background:var(--red)}
+.rc-icon{font-size:28px;margin-bottom:10px;display:block}
+.rc-title{font-family:var(--fb);font-size:10px;font-weight:700;letter-spacing:0.12em;color:var(--muted);text-transform:uppercase;margin-bottom:6px}
+.rc-value{font-family:var(--fb);font-size:13px;font-weight:600;line-height:1.5;color:var(--text)}
+.result-actions{display:flex;gap:12px;justify-content:center;padding:0 24px 40px;flex-wrap:wrap}
+.btn-retry{background:transparent;border:1px solid var(--border);color:var(--muted);font-family:var(--fb);font-size:13px;font-weight:700;letter-spacing:0.1em;padding:12px 32px;cursor:pointer;transition:all 0.2s;clip-path:polygon(8px 0%,100% 0%,calc(100% - 8px) 100%,0% 100%)}
+.btn-retry:hover{border-color:var(--gold);color:var(--gold)}
+.btn-share{background:var(--gold);color:#0a0a0f;font-family:var(--fb);font-size:13px;font-weight:800;letter-spacing:0.1em;padding:12px 32px;border:none;cursor:pointer;transition:all 0.2s;clip-path:polygon(8px 0%,100% 0%,calc(100% - 8px) 100%,0% 100%)}
+.btn-share:hover{background:#fff}
+.scores-section{padding:0 24px 32px;max-width:800px;margin:0 auto;width:100%}
+.scores-title{font-family:var(--fb);font-size:14px;font-weight:800;letter-spacing:0.12em;color:var(--muted);margin-bottom:16px;text-align:center}
+.score-bar-wrap{margin-bottom:10px}
+.score-bar-label{display:flex;justify-content:space-between;font-size:11px;color:var(--muted);margin-bottom:4px}
+.score-bar-track{height:6px;background:var(--s2);border-radius:3px;overflow:hidden}
+.score-bar-fill{height:100%;border-radius:3px;transition:width 1s ease}
+.credit{text-align:center;padding:20px;font-size:10px;color:var(--border);letter-spacing:0.15em;text-transform:uppercase}
+@keyframes fadeUp{from{opacity:0;transform:translateY(20px)}to{opacity:1;transform:translateY(0)}}
+@keyframes bounce{0%,100%{transform:scale(1)}40%{transform:scale(1.2)}70%{transform:scale(0.95)}}
+@media(max-width:500px){.answers{grid-template-columns:1fr}.intro-stats{gap:20px}.result-cards{grid-template-columns:1fr 1fr}}
+</style></head><body>
 <div class="screen active" id="intro">
-  <div class="intro-deco deco-tl">🏆</div>
-  <div class="intro-deco deco-br">🎯</div>
-
-  <div class="intro-badge">Продукт индивидуального проекта · Мохов Артём · 2026</div>
-
-  <div class="intro-title">
-    ПУТЬ
-    <span class="highlight">ЧЕМПИОНА</span>
-  </div>
-
-  <p class="intro-sub">
-    Интерактивный тест-навигатор для молодёжи. Ответь на 8 вопросов и узнай, какой вид спорта подходит именно тебе и как попасть в спорт высоких достижений.
-  </p>
-
-  <div class="intro-stats">
-    <div class="istat"><div class="istat-n">8</div><div class="istat-l">вопросов</div></div>
-    <div class="istat"><div class="istat-n">6</div><div class="istat-l">профилей</div></div>
-    <div class="istat"><div class="istat-n">2 мин</div><div class="istat-l">на тест</div></div>
-  </div>
-
+<div class="intro-deco deco-tl">🏆</div>
+<div class="intro-deco deco-br">🎯</div>
+<div class="intro-badge">Продукт индивидуального проекта · Мохов Артём · 2026</div>
+<div class="intro-title">ПУТЬ<span class="highlight">ЧЕМПИОНА</span></div>
+<p class="intro-sub">Интерактивный тест-навигатор для молодёжи. Ответь на 8 вопросов и узнай, какой вид спорта подходит именно тебе и как попасть в спорт высоких достижений.</p>
+<div class="intro-stats">
+<div class="istat"><div class="istat-n">8</div><div class="istat-l">вопросов</div></div>
+<div class="istat"><div class="istat-n">6</div><div class="istat-l">профилей</div></div>
+<div class="istat"><div class="istat-n">2 мин</div><div class="istat-l">на тест</div></div>
+</div>
 <button class="btn-start" onclick="startQuiz()">НАЧАТЬ ТЕСТ</button>
-
-  <div class="credit" style="margin-top:40px">Современная молодёжь, саморазвитие и спорт высоких достижений</div>
+<div class="credit" style="margin-top:40px">Современная молодёжь, саморазвитие и спорт высоких достижений</div>
 </div>
-
-<!-- ── QUIZ ───────────────────────────────────────────────────────── -->
-
 <div class="screen" id="quiz">
-  <div class="quiz-header">
-    <div class="quiz-logo">🏆 ПУТЬ ЧЕМПИОНА</div>
-    <div class="progress-wrap">
-      <div class="progress-label">
-        <span>ПРОГРЕСС</span>
-        <span id="pct">0%</span>
-      </div>
-      <div class="progress-bar"><div class="progress-fill" id="pfill" style="width:0%"></div></div>
-    </div>
-    <div class="q-counter">ВОПРОС <span id="qnum">1</span>/8</div>
-  </div>
-
-  <div class="quiz-body">
-    <div class="q-category" id="qcat"></div>
-    <div class="q-text" id="qtext"></div>
-    <div class="answers" id="answers"></div>
-  </div>
+<div class="quiz-header">
+<div class="quiz-logo">🏆 ПУТЬ ЧЕМПИОНА</div>
+<div class="progress-wrap">
+<div class="progress-label"><span>ПРОГРЕСС</span><span id="pct">0%</span></div>
+<div class="progress-bar"><div class="progress-fill" id="pfill" style="width:0%"></div></div>
 </div>
-
-<!-- ── RESULT ─────────────────────────────────────────────────────── -->
-
+<div class="q-counter">ВОПРОС <span id="qnum">1</span>/8</div>
+</div>
+<div class="quiz-body">
+<div class="q-category" id="qcat"></div>
+<div class="q-text" id="qtext"></div>
+<div class="answers" id="answers"></div>
+</div>
+</div>
 <div class="screen" id="result">
-  <div class="result-hero">
-    <span class="result-trophy" id="rtrophy">🏆</span>
-    <div class="result-label">Твой профиль спортсмена</div>
-    <div class="result-sport" id="rsport">КОМАНДНЫЙ ИГРОК</div>
-    <p class="result-desc" id="rdesc"></p>
-  </div>
-
-  <div class="result-cards" id="rcards"></div>
-
-  <div class="scores-section">
-    <div class="scores-title">РЕЗУЛЬТАТЫ ПО НАПРАВЛЕНИЯМ</div>
-    <div id="score-bars"></div>
-  </div>
-
-  <div class="result-actions">
-    <button class="btn-retry" onclick="restart()">ПРОЙТИ ЗАНОВО</button>
-    <button class="btn-share" onclick="copyResult()">СКОПИРОВАТЬ РЕЗУЛЬТАТ</button>
-  </div>
-
-  <div class="credit">Индивидуальный проект · Мохов Артём · МАОУ ОЦ №8 · Владимир, 2026</div>
+<div class="result-hero">
+<span class="result-trophy" id="rtrophy">🏆</span>
+<div class="result-label">Твой профиль спортсмена</div>
+<div class="result-sport" id="rsport"></div>
+<p class="result-desc" id="rdesc"></p>
 </div>
-
+<div class="result-cards" id="rcards"></div>
+<div class="scores-section">
+<div class="scores-title">РЕЗУЛЬТАТЫ ПО НАПРАВЛЕНИЯМ</div>
+<div id="score-bars"></div>
+</div>
+<div class="result-actions">
+<button class="btn-retry" onclick="restart()">ПРОЙТИ ЗАНОВО</button>
+<button class="btn-share" onclick="copyResult()">СКОПИРОВАТЬ РЕЗУЛЬТАТ</button>
+</div>
+<div class="credit">Индивидуальный проект · Мохов Артём · МАОУ ОЦ №8 · Владимир, 2026</div>
+</div>
 <script>
-const QUESTIONS = [
-  {
-    cat: 'ХАРАКТЕР',
-    text: 'Как ты предпочитаешь добиваться цели?',
-    answers: [
-      { text: 'В команде — вместе мы сильнее', scores: { team: 3, fight: 0, speed: 1, power: 0, art: 0, mind: 1 } },
-      { text: 'Один на один — только я и цель', scores: { team: 0, fight: 3, speed: 1, power: 1, art: 1, mind: 1 } },
-      { text: 'Через стратегию и расчёт', scores: { team: 1, fight: 1, speed: 0, power: 0, art: 1, mind: 3 } },
-      { text: 'Через упорные тренировки и силу воли', scores: { team: 1, fight: 1, speed: 1, power: 3, art: 0, mind: 0 } },
-    ]
-  },
-  {
-    cat: 'ФИЗИЧЕСКИЕ ДАННЫЕ',
-    text: 'Что у тебя развито лучше всего?',
-    answers: [
-      { text: 'Скорость и реакция', scores: { team: 1, fight: 1, speed: 3, power: 0, art: 1, mind: 0 } },
-      { text: 'Сила и выносливость', scores: { team: 0, fight: 2, speed: 0, power: 3, art: 0, mind: 0 } },
-      { text: 'Гибкость и координация', scores: { team: 1, fight: 1, speed: 1, power: 0, art: 3, mind: 0 } },
-      { text: 'Внимание и точность', scores: { team: 1, fight: 0, speed: 1, power: 0, art: 1, mind: 3 } },
-    ]
-  },
-  {
-    cat: 'МОТИВАЦИЯ',
-    text: 'Что для тебя главное в спорте?',
-    answers: [
-      { text: 'Победить соперника в честной борьбе', scores: { team: 0, fight: 3, speed: 1, power: 1, art: 0, mind: 1 } },
-      { text: 'Стать частью сильного коллектива', scores: { team: 3, fight: 0, speed: 1, power: 0, art: 1, mind: 1 } },
-      { text: 'Установить рекорд и превзойти самого себя', scores: { team: 0, fight: 0, speed: 3, power: 2, art: 0, mind: 1 } },
-      { text: 'Выразить себя через движение', scores: { team: 1, fight: 0, speed: 1, power: 0, art: 3, mind: 1 } },
-    ]
-  },
-  {
-    cat: 'ОБРАЗ ЖИЗНИ',
-    text: 'Как ты относишься к режиму и дисциплине?',
-    answers: [
-      { text: 'Строгий режим — моя основа', scores: { team: 1, fight: 2, speed: 2, power: 3, art: 0, mind: 1 } },
-      { text: 'Дисциплина важна, но нужна свобода творчества', scores: { team: 1, fight: 0, speed: 1, power: 0, art: 3, mind: 1 } },
-      { text: 'Планирую каждый шаг заранее', scores: { team: 1, fight: 1, speed: 0, power: 0, art: 0, mind: 3 } },
-      { text: 'Командный распорядок мне подходит', scores: { team: 3, fight: 0, speed: 1, power: 1, art: 0, mind: 1 } },
-    ]
-  },
-  {
-    cat: 'СТРЕСС',
-    text: 'Как ты ведёшь себя под давлением на соревнованиях?',
-    answers: [
-      { text: 'Собираюсь и действую чётко — адреналин помогает', scores: { team: 1, fight: 3, speed: 2, power: 1, art: 0, mind: 1 } },
-      { text: 'Опираюсь на команду, вместе легче', scores: { team: 3, fight: 0, speed: 0, power: 0, art: 1, mind: 1 } },
-      { text: 'Ухожу в состояние потока — движение становится медитацией', scores: { team: 0, fight: 1, speed: 1, power: 0, art: 3, mind: 1 } },
-      { text: 'Анализирую ситуацию и выбираю лучшую тактику', scores: { team: 1, fight: 1, speed: 0, power: 0, art: 0, mind: 3 } },
-    ]
-  },
-  {
-    cat: 'САМОРАЗВИТИЕ',
-    text: 'Как ты предпочитаешь развиваться?',
-    answers: [
-      { text: 'Через видео-разборы своих выступлений', scores: { team: 1, fight: 1, speed: 1, power: 0, art: 1, mind: 3 } },
-      { text: 'Через повторения до автоматизма', scores: { team: 0, fight: 2, speed: 2, power: 3, art: 1, mind: 0 } },
-      { text: 'Через работу в паре с тренером', scores: { team: 2, fight: 1, speed: 1, power: 1, art: 2, mind: 1 } },
-      { text: 'Через импровизацию и эксперименты', scores: { team: 1, fight: 0, speed: 1, power: 0, art: 3, mind: 1 } },
-    ]
-  },
-  {
-    cat: 'ЦЕЛЬ',
-    text: 'Каким ты видишь себя через 10 лет в спорте?',
-    answers: [
-      { text: 'Капитан национальной сборной', scores: { team: 3, fight: 1, speed: 1, power: 1, art: 0, mind: 2 } },
-      { text: 'Чемпион мира в единоборствах', scores: { team: 0, fight: 3, speed: 1, power: 2, art: 0, mind: 1 } },
-      { text: 'Олимпийский чемпион в скоростной дисциплине', scores: { team: 0, fight: 0, speed: 3, power: 2, art: 0, mind: 1 } },
-      { text: 'Победитель крупных соревнований по гимнастике или фигурному катанию', scores: { team: 0, fight: 0, speed: 1, power: 0, art: 3, mind: 2 } },
-    ]
-  },
-  {
-    cat: 'РЕСУРСЫ ВЛАДИМИРА',
-    text: 'С чего ты готов начать прямо сейчас?',
-    answers: [
-      { text: 'Записаться в СШОР «Владимир» на пробное занятие', scores: { team: 2, fight: 2, speed: 2, power: 2, art: 1, mind: 1 } },
-      { text: 'Подать заявку на стипендию губернатора', scores: { team: 1, fight: 1, speed: 1, power: 1, art: 1, mind: 3 } },
-      { text: 'Найти тренера через Комитет по спорту области', scores: { team: 1, fight: 2, speed: 1, power: 2, art: 1, mind: 1 } },
-      { text: 'Вступить в молодёжное спортивное объединение', scores: { team: 3, fight: 0, speed: 1, power: 0, art: 2, mind: 1 } },
-    ]
-  },
-];
-
-const PROFILES = {
-  team:  { emoji:'⚽', name:'КОМАНДНЫЙ ИГРОК', desc:'Ты рождён для командных видов спорта. Твоя сила — в синергии с партнёрами, умении чувствовать игру и вести за собой. Рекомендуем: футбол, волейбол, баскетбол, хоккей.', color:'#3a8ff5',
-    cards:[
-      { icon:'🏟️', title:'Твой спорт', value:'Футбол, волейбол, баскетбол, хоккей', cl:'blue' },
-      { icon:'📍', title:'Начать во Владимире', value:'СШОР «Владимир» — командные секции, ул. Мира, 54', cl:'gold' },
-      { icon:'💰', title:'Поддержка', value:'Стипендия губернатора для перспективных игроков', cl:'green' },
-      { icon:'🎯', title:'Ключевое качество', value:'Лидерство и командный дух', cl:'red' },
-    ]
-  },
-  fight: { emoji:'🥊', name:'ЕДИНОБОРЕЦ', desc:'Тебе близок прямой поединок, где всё зависит только от тебя. Ты целеустремлён, дисциплинирован и не боишься выходить один на один с вызовом. Рекомендуем: борьба, бокс, дзюдо, самбо.', color:'#e84040',
-    cards:[
-      { icon:'🥋', title:'Твой спорт', value:'Бокс, борьба, дзюдо, самбо, каратэ', cl:'red' },
-      { icon:'📍', title:'Начать во Владимире', value:'СШОР — секции единоборств, Комитет по спорту обл.', cl:'gold' },
-      { icon:'💰', title:'Поддержка', value:'Фонд поддержки олимпийцев России', cl:'green' },
-      { icon:'🎯', title:'Ключевое качество', value:'Сила воли и характер', cl:'blue' },
-    ]
-  },
-  speed: { emoji:'⚡', name:'СКОРОСТНОЙ АТЛЕТ', desc:'Твой конёк — скорость, реакция и взрывная мощь. Ты создан для дисциплин, где победа измеряется долями секунды. Рекомендуем: лёгкая атлетика, плавание, велоспорт.', color:'#f5c842',
-    cards:[
-      { icon:'🏃', title:'Твой спорт', value:'Лёгкая атлетика, плавание, велоспорт, конькобег', cl:'gold' },
-      { icon:'📍', title:'Начать во Владимире', value:'СШОР — секция лёгкой атлетики и плавания', cl:'blue' },
-      { icon:'💰', title:'Поддержка', value:'Стипендия Президента РФ — до 52 000 ₽/мес', cl:'green' },
-      { icon:'🎯', title:'Ключевое качество', value:'Взрывная скорость и реакция', cl:'red' },
-    ]
-  },
-  power: { emoji:'🏋️', name:'СИЛОВОЙ АТЛЕТ', desc:'Ты создан для испытания пределов человеческих возможностей. Терпение, сила и выносливость — твои главные оружия. Рекомендуем: тяжёлая атлетика, гребля, триатлон.', color:'#e8a820',
-    cards:[
-      { icon:'💪', title:'Твой спорт', value:'Тяжёлая атлетика, гребля, триатлон, толкание ядра', cl:'gold' },
-      { icon:'📍', title:'Начать во Владимире', value:'Владимирское училище олимпийского резерва', cl:'blue' },
-      { icon:'💰', title:'Поддержка', value:'Нацпроект «Демография» — программа «Спорт-норма жизни»', cl:'green' },
-      { icon:'🎯', title:'Ключевое качество', value:'Выносливость и железная воля', cl:'red' },
-    ]
-  },
-  art:   { emoji:'🤸', name:'АРТИСТИЧНЫЙ АТЛЕТ', desc:'Спорт для тебя — это искусство. Ты сочетаешь физическую подготовку с творческим самовыражением. Рекомендуем: гимнастика, фигурное катание, синхронное плавание.', color:'#2ecc71',
-    cards:[
-      { icon:'🎭', title:'Твой спорт', value:'Гимнастика, фигурное катание, синхронное плавание', cl:'green' },
-      { icon:'📍', title:'Начать во Владимире', value:'ДЮСШ — художественная и спортивная гимнастика', cl:'gold' },
-      { icon:'💰', title:'Поддержка', value:'Конкурс «Молодой деятель культуры и спорта»', cl:'blue' },
-      { icon:'🎯', title:'Ключевое качество', value:'Пластика, артистизм и точность', cl:'red' },
-    ]
-  },
-  mind:  { emoji:'♟️', name:'СТРАТЕГ', desc:'Ты думаешь на несколько шагов вперёд. Интеллект и расчёт — твои главные преимущества. Рекомендуем: шахматы (спорт!), стрельба, парусный спорт, керлинг.', color:'#9b59b6',
-    cards:[
-      { icon:'🧠', title:'Твой спорт', value:'Шахматы, стрельба, парусный спорт, керлинг', cl:'blue' },
-      { icon:'📍', title:'Начать во Владимире', value:'Владимирская федерация шахмат, стрелковый клуб', cl:'gold' },
-      { icon:'💰', title:'Поддержка', value:'Росгрант — до 1 500 000 ₽ на развитие', cl:'green' },
-      { icon:'🎯', title:'Ключевое качество', value:'Стратегическое мышление и концентрация', cl:'red' },
-    ]
-  },
-};
-
-let currentQ = 0;
-let scores = { team:0, fight:0, speed:0, power:0, art:0, mind:0 };
-
-function startQuiz() {
-  document.getElementById('intro').classList.remove('active');
-  document.getElementById('quiz').classList.add('active');
-  currentQ = 0;
-  scores = { team:0, fight:0, speed:0, power:0, art:0, mind:0 };
-  renderQuestion();
-}
-
-function renderQuestion() {
-  const q = QUESTIONS[currentQ];
-  const pct = Math.round((currentQ / QUESTIONS.length) * 100);
-
-  document.getElementById('qnum').textContent = currentQ + 1;
-  document.getElementById('pct').textContent = pct + '%';
-  document.getElementById('pfill').style.width = pct + '%';
-
-  // Reset animations
-  ['qcat','qtext','answers'].forEach(id => {
-    const el = document.getElementById(id);
-    el.style.animation = 'none';
-    el.offsetHeight;
-    el.style.animation = '';
-    el.style.opacity = '0';
-  });
-
-  setTimeout(() => {
-    document.getElementById('qcat').textContent = q.cat;
-    document.getElementById('qtext').textContent = q.text;
-
-    const letters = ['А', 'Б', 'В', 'Г'];
-    document.getElementById('answers').innerHTML = q.answers.map((a, i) => `
-      <button class="ans-btn" onclick="selectAnswer(${i})">
-        <span class="ans-letter">${letters[i]}</span>
-        ${a.text}
-      </button>
-    `).join('');
-
-    ['qcat','qtext','answers'].forEach(id => {
-      document.getElementById(id).style.animation = '';
-    });
-  }, 50);
-}
-
-function selectAnswer(idx) {
-  const q = QUESTIONS[currentQ];
-  const s = q.answers[idx].scores;
-
-  // Visual feedback
-  document.querySelectorAll('.ans-btn').forEach((btn, i) => {
-    btn.disabled = true;
-    if (i === idx) btn.classList.add('selected');
-  });
-
-  Object.keys(s).forEach(k => scores[k] += s[k]);
-
-  setTimeout(() => {
-    currentQ++;
-    if (currentQ < QUESTIONS.length) {
-      renderQuestion();
-    } else {
-      showResult();
-    }
-  }, 400);
-}
-
-function showResult() {
-  document.getElementById('quiz').classList.remove('active');
-  document.getElementById('result').classList.add('active');
-  document.getElementById('result').scrollTop = 0;
-
-  // Find winner
-  const winner = Object.entries(scores).sort((a,b) => b[1]-a[1])[0][0];
-  const prof = PROFILES[winner];
-
-  document.getElementById('rtrophy').textContent = prof.emoji;
-  document.getElementById('rsport').textContent = prof.name;
-  document.getElementById('rdesc').textContent = prof.desc;
-
-  // Cards
-  const cardColors = { gold:'var(--gold)', blue:'var(--blue)', green:'var(--green)', red:'var(--red)' };
-  document.getElementById('rcards').innerHTML = prof.cards.map(c => `
-    <div class="rc ${c.cl}">
-      <span class="rc-icon">${c.icon}</span>
-      <div class="rc-title">${c.title}</div>
-      <div class="rc-value">${c.value}</div>
-    </div>
-  `).join('');
-
-  // Score bars
-  const total = Object.values(scores).reduce((a,b)=>a+b,0);
-  const labels = { team:'Командные виды', fight:'Единоборства', speed:'Скоростные', power:'Силовые', art:'Артистические', mind:'Интеллектуальные' };
-  const barColors = { team:'#3a8ff5', fight:'#e84040', speed:'#f5c842', power:'#e8a820', art:'#2ecc71', mind:'#9b59b6' };
-
-  document.getElementById('score-bars').innerHTML = Object.entries(scores)
-    .sort((a,b)=>b[1]-a[1])
-    .map(([k,v]) => {
-      const pct = total > 0 ? Math.round((v/total)*100) : 0;
-      return `<div class="score-bar-wrap">
-        <div class="score-bar-label"><span>${labels[k]}</span><span>${pct}%</span></div>
-        <div class="score-bar-track">
-          <div class="score-bar-fill" style="width:0%;background:${barColors[k]}" data-w="${pct}"></div>
-        </div>
-      </div>`;
-    }).join('');
-
-  setTimeout(() => {
-    document.querySelectorAll('.score-bar-fill').forEach(el => {
-      el.style.width = el.dataset.w + '%';
-    });
-  }, 300);
-}
-
-function restart() {
-  document.getElementById('result').classList.remove('active');
-  startQuiz();
-}
-
-function copyResult() {
-  const sport = document.getElementById('rsport').textContent;
-  const desc = document.getElementById('rdesc').textContent;
-  const text = `🏆 МОЙ ПРОФИЛЬ: ${sport}\n\n${desc}\n\n📱 Продукт проекта «Современная молодёжь, саморазвитие и спорт высоких достижений»\nАвтор: Мохов Артём, МАОУ ОЦ №8, Владимир, 2026`;
-  navigator.clipboard.writeText(text).then(() => {
-    const btn = document.querySelector('.btn-share');
-    const orig = btn.textContent;
-    btn.textContent = '✓ СКОПИРОВАНО!';
-    setTimeout(() => btn.textContent = orig, 2000);
-  }).catch(() => alert('Результат: ' + sport));
-}
-</script>
-
-</body>
-</html>
+const QUESTIONS=[{cat:'ХАРАКТЕР',text:'Как ты предпочитаешь добиваться цели?',answers:[{text:'В команде — вместе мы сильнее',scores:{team:3,fight:0,speed:1,power:0,art:0,mind:1}},{text:'Один на один — только я и цель',scores:{team:0,fight:3,speed:1,power:1,art:1,mind:1}},{text:'Через стратегию и расчёт',scores:{team:1,fight:1,speed:0,power:0,art:1,mind:3}},{text:'Через упорные тренировки и силу воли',scores:{team:1,fight:1,speed:1,power:3,art:0,mind:0}}]},{cat:'ФИЗИЧЕСКИЕ ДАННЫЕ',text:'Что у тебя развито лучше всего?',answers:[{text:'Скорость и реакция',scores:{team:1,fight:1,speed:3,power:0,art:1,mind:0}},{text:'Сила и выносливость',scores:{team:0,fight:2,speed:0,power:3,art:0,mind:0}},{text:'Гибкость и координация',scores:{team:1,fight:1,speed:1,power:0,art:3,mind:0}},{text:'Внимание и точность',scores:{team:1,fight:0,speed:1,power:0,art:1,mind:3}}]},{cat:'МОТИВАЦИЯ',text:'Что для тебя главное в спорте?',answers:[{text:'Победить соперника в честной борьбе',scores:{team:0,fight:3,speed:1,power:1,art:0,mind:1}},{text:'Стать частью сильного коллектива',scores:{team:3,fight:0,speed:1,power:0,art:1,mind:1}},{text:'Установить рекорд и превзойти самого себя',scores:{team:0,fight:0,speed:3,power:2,art:0,mind:1}},{text:'Выразить себя через движение',scores:{team:1,fight:0,speed:1,power:0,art:3,mind:1}}]},{cat:'ОБРАЗ ЖИЗНИ',text:'Как ты относишься к режиму и дисциплине?',answers:[{text:'Строгий режим — моя основа',scores:{team:1,fight:2,speed:2,power:3,art:0,mind:1}},{text:'Дисциплина важна, но нужна свобода творчества',scores:{team:1,fight:0,speed:1,power:0,art:3,mind:1}},{text:'Планирую каждый шаг заранее',scores:{team:1,fight:1,speed:0,power:0,art:0,mind:3}},{text:'Командный распорядок мне подходит',scores:{team:3,fight:0,speed:1,power:1,art:0,mind:1}}]},{cat:'СТРЕСС',text:'Как ты ведёшь себя под давлением на соревнованиях?',answers:[{text:'Собираюсь и действую чётко — адреналин помогает',scores:{team:1,fight:3,speed:2,power:1,art:0,mind:1}},{text:'Опираюсь на команду, вместе легче',scores:{team:3,fight:0,speed:0,power:0,art:1,mind:1}},{text:'Ухожу в состояние потока — движение становится медитацией',scores:{team:0,fight:1,speed:1,power:0,art:3,mind:1}},{text:'Анализирую ситуацию и выбираю лучшую тактику',scores:{team:1,fight:1,speed:0,power:0,art:0,mind:3}}]},{cat:'САМОРАЗВИТИЕ',text:'Как ты предпочитаешь развиваться?',answers:[{text:'Через видео-разборы своих выступлений',scores:{team:1,fight:1,speed:1,power:0,art:1,mind:3}},{text:'Через повторения до автоматизма',scores:{team:0,fight:2,speed:2,power:3,art:1,mind:0}},{text:'Через работу в паре с тренером',scores:{team:2,fight:1,speed:1,power:1,art:2,mind:1}},{text:'Через импровизацию и эксперименты',scores:{team:1,fight:0,speed:1,power:0,art:3,mind:1}}]},{cat:'ЦЕЛЬ',text:'Каким ты видишь себя через 10 лет в спорте?',answers:[{text:'Капитан национальной сборной',scores:{team:3,fight:1,speed:1,power:1,art:0,mind:2}},{text:'Чемпион мира в единоборствах',scores:{team:0,fight:3,speed:1,power:2,art:0,mind:1}},{text:'Олимпийский чемпион в скоростной дисциплине',scores:{team:0,fight:0,speed:3,power:2,art:0,mind:1}},{text:'Победитель соревнований по гимнастике или фигурному катанию',scores:{team:0,fight:0,speed:1,power:0,art:3,mind:2}}]},{cat:'РЕСУРСЫ ВЛАДИМИРА',text:'С чего ты готов начать прямо сейчас?',answers:[{text:'Записаться в СШОР «Владимир» на пробное занятие',scores:{team:2,fight:2,speed:2,power:2,art:1,mind:1}},{text:'Подать заявку на стипендию губернатора',scores:{team:1,fight:1,speed:1,power:1,art:1,mind:3}},{text:'Найти тренера через Комитет по спорту области',scores:{team:1,fight:2,speed:1,power:2,art:1,mind:1}},{text:'Вступить в молодёжное спортивное объединение',scores:{team:3,fight:0,speed:1,power:0,art:2,mind:1}}]}];
+const PROFILES={team:{emoji:'⚽',name:'КОМАНДНЫЙ ИГРОК',desc:'Ты рождён для командных видов спорта. Твоя сила — в синергии с партнёрами, умении чувствовать игру и вести за собой. Рекомендуем: футбол, волейбол, баскетбол, хоккей.',color:'#3a8ff5',cards:[{icon:'🏟️',title:'Твой спорт',value:'Футбол, волейбол, баскетбол, хоккей',cl:'blue'},{icon:'📍',title:'Начать во Владимире',value:'СШОР «Владимир» — командные секции',cl:'gold'},{icon:'💰',title:'Поддержка',value:'Стипендия губернатора для перспективных игроков',cl:'green'},{icon:'🎯',title:'Ключевое качество',value:'Лидерство и командный дух',cl:'red'}]},fight:{emoji:'🥊',name:'ЕДИНОБОРЕЦ',desc:'Тебе близок прямой поединок, где всё зависит только от тебя. Ты целеустремлён, дисциплинирован и не боишься выходить один на один с вызовом. Рекомендуем: борьба, бокс, дзюдо, самбо.',color:'#e84040',cards:[{icon:'🥋',title:'Твой спорт',value:'Бокс, борьба, дзюдо, самбо, каратэ',cl:'red'},{icon:'📍',title:'Начать во Владимире',value:'СШОР — секции единоборств',cl:'gold'},{icon:'💰',title:'Поддержка',value:'Фонд поддержки олимпийцев России',cl:'green'},{icon:'🎯',title:'Ключевое качество',value:'Сила воли и характер',cl:'blue'}]},speed:{emoji:'⚡',name:'СКОРОСТНОЙ АТЛЕТ',desc:'Твой конёк — скорость, реакция и взрывная мощь. Ты создан для дисциплин, где победа измеряется долями секунды. Рекомендуем: лёгкая атлетика, плавание, велоспорт.',color:'#f5c842',cards:[{icon:'🏃',title:'Твой спорт',value:'Лёгкая атлетика, плавание, велоспорт',cl:'gold'},{icon:'📍',title:'Начать во Владимире',value:'СШОР — секция лёгкой атлетики и плавания',cl:'blue'},{icon:'💰',title:'Поддержка',value:'Стипендия Президента РФ — до 52 000 ₽/мес',cl:'green'},{icon:'🎯',title:'Ключевое качество',value:'Взрывная скорость и реакция',cl:'red'}]},power:{emoji:'🏋️',name:'СИЛОВОЙ АТЛЕТ',desc:'Ты создан для испытания пределов человеческих возможностей. Терпение, сила и выносливость — твои главные оружия.',color:'#e8a820',cards:[{icon:'💪',title:'Твой спорт',value:'Тяжёлая атлетика, гребля, триатлон',cl:'gold'},{icon:'📍',title:'Начать во Владимире',value:'Владимирское училище олимпийского резерва',cl:'blue'},{icon:'💰',title:'Поддержка',value:'Нацпроект «Демография» — Спорт-норма жизни',cl:'green'},{icon:'🎯',title:'Ключевое качество',value:'Выносливость и железная воля',cl:'red'}]},art:{emoji:'🤸',name:'АРТИСТИЧНЫЙ АТЛЕТ',desc:'Спорт для тебя — это искусство. Ты сочетаешь физическую подготовку с творческим самовыражением. Рекомендуем: гимнастика, фигурное катание.',color:'#2ecc71',cards:[{icon:'🎭',title:'Твой спорт',value:'Гимнастика, фигурное катание, синхронное плавание',cl:'green'},{icon:'📍',title:'Начать во Владимире',value:'ДЮСШ — художественная и спортивная гимнастика',cl:'gold'},{icon:'💰',title:'Поддержка',value:'Конкурс «Молодой деятель культуры и спорта»',cl:'blue'},{icon:'🎯',title:'Ключевое качество',value:'Пластика, артистизм и точность',cl:'red'}]},mind:{emoji:'♟️',name:'СТРАТЕГ',desc:'Ты думаешь на несколько шагов вперёд. Интеллект и расчёт — твои главные преимущества. Рекомендуем: шахматы, стрельба, парусный спорт.',color:'#9b59b6',cards:[{icon:'🧠',title:'Твой спорт',value:'Шахматы, стрельба, парусный спорт',cl:'blue'},{icon:'📍',title:'Начать во Владимире',value:'Владимирская федерация шахмат',cl:'gold'},{icon:'💰',title:'Поддержка',value:'Росгрант — до 1 500 000 ₽',cl:'green'},{icon:'🎯',title:'Ключевое качество',value:'Стратегическое мышление и концентрация',cl:'red'}]}};
+let currentQ=0,scores={team:0,fight:0,speed:0,power:0,art:0,mind:0};
+function startQuiz(){document.getElementById('intro').classList.remove('active');document.getElementById('quiz').classList.add('active');currentQ=0;scores={team:0,fight:0,speed:0,power:0,art:0,mind:0};renderQuestion()}
+function renderQuestion(){const q=QUESTIONS[currentQ];const pct=Math.round((currentQ/QUESTIONS.length)*100);document.getElementById('qnum').textContent=currentQ+1;document.getElementById('pct').textContent=pct+'%';document.getElementById('pfill').style.width=pct+'%';['qcat','qtext','answers'].forEach(id=>{const el=document.getElementById(id);el.style.animation='none';el.offsetHeight;el.style.animation='';el.style.opacity='0'});setTimeout(()=>{document.getElementById('qcat').textContent=q.cat;document.getElementById('qtext').textContent=q.text;const letters=['А','Б','В','Г'];document.getElementById('answers').innerHTML=q.answers.map((a,i)=>`<button class="ans-btn" onclick="selectAnswer(${i})"><span class="ans-letter">${letters[i]}</span>${a.text}</button>`).join('');['qcat','qtext','answers'].forEach(id=>{document.getElementById(id).style.animation=''})},50)}
+function selectAnswer(idx){const q=QUESTIONS[currentQ];const s=q.answers[idx].scores;document.querySelectorAll('.ans-btn').forEach((btn,i)=>{btn.disabled=true;if(i===idx)btn.classList.add('selected')});Object.keys(s).forEach(k=>scores[k]+=s[k]);setTimeout(()=>{currentQ++;if(currentQ<QUESTIONS.length){renderQuestion()}else{showResult()}},400)}
+function showResult(){document.getElementById('quiz').classList.remove('active');document.getElementById('result').classList.add('active');document.getElementById('result').scrollTop=0;const winner=Object.entries(scores).sort((a,b)=>b[1]-a[1])[0][0];const prof=PROFILES[winner];document.getElementById('rtrophy').textContent=prof.emoji;document.getElementById('rsport').textContent=prof.name;document.getElementById('rdesc').textContent=prof.desc;document.getElementById('rcards').innerHTML=prof.cards.map(c=>`<div class="rc ${c.cl}"><span class="rc-icon">${c.icon}</span><div class="rc-title">${c.title}</div><div class="rc-value">${c.value}</div></div>`).join('');const total=Object.values(scores).reduce((a,b)=>a+b,0);const labels={team:'Командные виды',fight:'Единоборства',speed:'Скоростные',power:'Силовые',art:'Артистические',mind:'Интеллектуальные'};const barColors={team:'#3a8ff5',fight:'#e84040',speed:'#f5c842',power:'#e8a820',art:'#2ecc71',mind:'#9b59b6'};document.getElementById('score-bars').innerHTML=Object.entries(scores).sort((a,b)=>b[1]-a[1]).map(([k,v])=>{const pct=total>0?Math.round((v/total)*100):0;return`<div class="score-bar-wrap"><div class="score-bar-label"><span>${labels[k]}</span><span>${pct}%</span></div><div class="score-bar-track"><div class="score-bar-fill" style="width:0%;background:${barColors[k]}" data-w="${pct}"></div></div></div>`}).join('');setTimeout(()=>{document.querySelectorAll('.score-bar-fill').forEach(el=>{el.style.width=el.dataset.w+'%'})},300)}
+function restart(){document.getElementById('result').classList.remove('active');startQuiz()}
+function copyResult(){const sport=document.getElementById('rsport').textContent;const desc=document.getElementById('rdesc').textContent;const text=`🏆 МОЙ ПРОФИЛЬ: ${sport}\n\n${desc}\n\nПродукт проекта «Современная молодёжь, саморазвитие и спорт высоких достижений»\nАвтор: Мохов Артём, МАОУ ОЦ №8, Владимир, 2026`;navigator.clipboard.writeText(text).then(()=>{const btn=document.querySelector('.btn-share');const orig=btn.textContent;btn.textContent='✓ СКОПИРОВАНО!';setTimeout(()=>btn.textContent=orig,2000)}).catch(()=>alert('Результат: '+sport))}
+</script></body></html>
